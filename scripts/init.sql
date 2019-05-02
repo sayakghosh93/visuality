@@ -1,7 +1,8 @@
 	CREATE TABLE user(
 	id int not null,
 	username TEXT not null,
-	password TEXT not null
+	password TEXT not null,
+	PRIMARY KEY (id)
 	);
 
 	CREATE TABLE document(

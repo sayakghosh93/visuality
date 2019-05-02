@@ -36,3 +36,8 @@ visualization_status_model = api.model('Status', {
     'status': fields.String(readOnly=True, description='The status of the visualization'),
     'download_url': fields.String(required=True, description='download url of the visualization'),
 })
+
+visualization_metadata_model = api.model('Visualization Metadata Model', {
+    'visualization_id': fields.String(readOnly=True, description='visualization id associated with the metadata'),
+    'data': fields.String(required=True, description='Data required to render the visualization'),
+})

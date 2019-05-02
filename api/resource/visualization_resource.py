@@ -2,7 +2,7 @@ from api.restplus import api
 from flask import request
 from flask_restplus import Resource
 from api.swagger import visualization_model
-from api.swagger import visualization_status_model
+from api.swagger import visualization_metadata_model
 from api.swagger import visualization_request
 
 ns = api.namespace('v1/<int:document_id>/visualize/', description='Operations related to visualization')
@@ -31,7 +31,7 @@ class VisualizationItem(Resource):
 @ns.route('/<string:visualization_type>/<int:visualization_id>')
 @api.response(404, 'Visualization not found.')
 class VisualizationItemView(Resource):
-    @api.marshal_with(visualization_status_model)
+    @api.marshal_with(visualization_metadata_model)
     def get(self, id):
         """
         Returns a example.
