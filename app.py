@@ -5,6 +5,7 @@ from api.restplus import api
 from api.resource.document_resource import ns as document_namespace
 from api.resource.preprocees_resource import ns as preprocess_namespace
 from api.resource.visualization_resource import ns as visualization_namespace
+from database import db
 
 app = Flask(__name__)
 
@@ -28,8 +29,9 @@ def initialize_app(flask_app):
     api.add_namespace(document_namespace)
     api.add_namespace(visualization_namespace)
 
-
     flask_app.register_blueprint(blueprint)
+
+    db.init_app(flask_app)
 
 
 def main():

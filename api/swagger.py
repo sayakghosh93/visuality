@@ -6,6 +6,11 @@ example = api.model('Example', {
     'name': fields.String(required=True, description='example name'),
 })
 
+user = api.model('User', {
+    'id': fields.Integer(readOnly=True, description='The unique identifier of user'),
+    'username': fields.String(required=True, description='username of the user'),
+})
+
 visualization_model = api.model('Visualization Model', {
     'visualization_id': fields.Integer(readOnly=True, description='The unique identifier of visualization object'),
     'visualization_type': fields.String(required=True, description='Type of visualization'),
@@ -24,8 +29,17 @@ feature = api.model('feature', {
 
 document = api.model('Document', {
     'id': fields.Integer(readOnly=True, description='The unique identifier of document'),
-    'type': fields.String(required=True, description='Type of document'),
-    'features': fields.List(fields.Nested(feature))
+    'file_path': fields.String(required=True, description='File path'),
+    'user_id': fields.Integer(readOnly=True, description='The unique identifier of the user'),
+    'user': fields.Nested(user)
+
+})
+
+document_metadata = api.model('Document_Metadata', {
+    'id': fields.Integer(readOnly=True, description='The unique identifier of document metadata'),
+    'type': fields.String(readOnly=True, description='The type of metadata'),
+    'data': fields.String(readOnly=True, description='metadata')
+
 })
 
 visualization_request = api.model('Feature', {
