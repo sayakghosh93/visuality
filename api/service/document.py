@@ -93,9 +93,9 @@ def find_document_metadata(document):
     return metadatas
 
 
-def save_document(user_id, file_name):
-    user = User.query.filter(User.id == user_id).one()
-    file_path = 'data/' + user.username + '/' + file_name
+def save_document(user_id, file_name, file_path):
+    # user = User.query.filter(User.id == user_id).one()
+    # file_path = 'data/' + user.username + '/' + file_name
     document = Document(user_id, file_path, None)
     document = save_data(document)
     metadatas = find_document_metadata(document)
