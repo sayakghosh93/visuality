@@ -9,6 +9,14 @@ from api.service import visualization as visualization_service
 ns = api.namespace('v1/<int:document_id>/visualize/', description='Operations related to visualization')
 
 
+@ns.route('')
+@api.response(404, 'Document not found.')
+class VisualizationGetItem(Resource):
+    @api.marshal_list_with(visualization_response_model)
+    def get(self, document_id):
+        return visualization_service.show_all_visualizations(document_id)
+
+
 @ns.route('/<string:visualization_type>')
 @api.response(404, 'Document not found.')
 class VisualizationItem(Resource):

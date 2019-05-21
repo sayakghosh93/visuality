@@ -114,3 +114,14 @@ def get_visualizations_by_document_id_type(document_id, type):
         Visualization.document_id == document_id and (Visualization.type == type)).one()
 
     return visualization
+
+
+def show_all_visualizations(document_id):
+    response = []
+    visualizations = Visualization.query.filter(Visualization.document_id == document_id).all()
+    for visualization in visualizations:
+        vis_metadata = VisualizationMetadata.query.filter(VisualizationMetadata.visualization_id == visualization.id).one()
+        response_model = VisualizationResponseModel(visualization.id, document_id, visualization.type,
+                                                    visualization.data, vis_metadata)
+        response.append(response_model)
+    return response
