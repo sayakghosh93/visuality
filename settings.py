@@ -11,3 +11,5 @@ RESTPLUS_ERROR_404_HELP = False
 # SQLAlchemy settings
 SQLALCHEMY_DATABASE_URI = 'sqlite:///db.sqlite'
 SQLALCHEMY_TRACK_MODIFICATIONS = False
+
+DATA_PATH = "C:/Users/Sayak Ghosh/Documents/sem2/visualization/visuality/"
