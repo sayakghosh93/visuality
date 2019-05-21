@@ -60,6 +60,14 @@ document_metadata = api.model('Document_Metadata', {
 
 })
 
+document_response_model = api.model('Document Response Model', {
+    'id': fields.Integer(readOnly=True, description='The unique identifier of document'),
+    'file_path': fields.String(required=True, description='File path'),
+    'user_id': fields.Integer(readOnly=True, description='The unique identifier of the user'),
+    'metadata': fields.List(fields.Nested(document_metadata))
+
+})
+
 visualization_request = api.model('Feature', {
     'features': fields.List(fields.String(readOnly=True, description='The name of the feature')),
 })

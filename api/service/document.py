@@ -1,5 +1,14 @@
 from database import db
 from database.models import User, Document, DocumentMetadata
+import pandas as pd
+
+
+class DocumentResponseModel():
+    def __init__(self, id, user_id, file_path, metadata):
+        self.id = id
+        self.user_id = user_id
+        self.file_path = file_path
+        self.metadata = metadata
 
 
 def get_document_by_id(id):
@@ -40,3 +49,27 @@ def get_metadatas(user_id, document_id):
 def get_metadata(user_id, document_id, document_metadata_id):
     metadata = DocumentMetadata.query.filter(DocumentMetadata.id == document_metadata_id).one()
     return metadata
+
+
+def find_document_metadata(document):
+    metadatas = []
+    df = pd.read_csv(document.file_path, index_col=0)
+    features = list(df.columns)
+    document_metadata = DocumentMetadata(None, document.id, "features", str(features))
+    db.session.add(document_metadata)
+    db.session.commit()
+    db.session.refresh(document_metadata)
+    metadatas.append(document_metadata)
+    return metadatas
+
+
+def save_document(user_id, file_name):
+    user = User.query.filter(User.id == user_id).one()
+    file_path = 'data/' + user.username + '/' + file_name
+    document = Document(user_id, file_path, None)
+    db.session.add(document)
+    db.session.commit()
+    db.session.refresh(document)
+    metadatas = find_document_metadata(document)
+    response = DocumentResponseModel(document.id, user_id, document.file_path, metadatas)
+    return response
