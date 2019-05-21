@@ -1,5 +1,6 @@
 from api.restplus import api
 from flask import request
+from flask import make_response
 from flask_restplus import Resource
 import settings
 
@@ -8,7 +9,7 @@ import os
 from api.service import file_uploader
 from api.swagger import document_response_model
 
-ns = api.namespace('v1/<int:user_id>', description='Operations related to uploading the data')
+ns = api.namespace('v1/user/<int:user_id>', description='Operations related to uploading the data')
 
 
 @ns.route('/upload')
@@ -23,6 +24,8 @@ class Upload(Resource):
 
         status, document = file_uploader.upload_file(user_id, uploaded_file)
         if status:
+            # response = make_response(document)
+            # response.headers.add('Access-Control-Allow-Origin', '*')
             return document, 200
         else:
             return {'status': 'Failed'}, 400
