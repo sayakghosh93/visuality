@@ -41,7 +41,14 @@ def create_scatter_plot(document_id, df, features):
     for _, row in df.iterrows():
         data.append({"x": row[feature_x], "y": row[feature_y]})
 
-    visualization = Visualization(None, document_id, "scatter-plot", "")
+    visualization, visualization_metadata = create_visualization_models(data, "scatter-plot", document_id)
+
+    return VisualizationResponseModel(visualization.id, visualization.document_id, visualization.type,
+                                      visualization.data, visualization_metadata)
+
+
+def create_visualization_models(data, visualization_type, document_id):
+    visualization = Visualization(None, document_id, visualization_type, "")
     db.session.add(visualization)
     db.session.commit()
     db.session.refresh(visualization)
@@ -49,13 +56,28 @@ def create_scatter_plot(document_id, df, features):
     db.session.add(visualization_metadata)
     db.session.commit()
     db.session.refresh(visualization_metadata)
+    return visualization, visualization_metadata
 
+
+def create_histogram(document_id, df, features):
+    features_y = features[0]
+    print(df.shape)
+    data = list(df[features_y].values)
+    visualization, visualization_metadata = create_visualization_models(data, "histogram", document_id)
     return VisualizationResponseModel(visualization.id, visualization.document_id, visualization.type,
                                       visualization.data, visualization_metadata)
 
 
-def create_bar_plot(df, features):
-    pass
+def create_bar_plot(document_id, df, features):
+    categorical_feature = features[0]
+    numerical_feature = features[1]
+    df_grouped = df.groupby(categorical_feature)[numerical_feature].agg(['sum', 'count', 'mean']).reset_index()
+    data = []
+    for _, row in df_grouped.iterrows():
+        data.append({"label": row[categorical_feature], "sum": row['sum'], "count": row['count'], "mean": row['mean']})
+    visualization, visualization_metadata = create_visualization_models(data, "bar-plot", document_id)
+    return VisualizationResponseModel(visualization.id, visualization.document_id, visualization.type,
+                                      visualization.data, visualization_metadata)
 
 
 def create_visualization_from_features(document_id, visualization_type, features):
@@ -69,6 +91,8 @@ def create_visualization_from_features(document_id, visualization_type, features
     df = pd.read_csv(document.file_path, index_col=0)
     if visualization_type == 'scatter-plot':
         return create_scatter_plot(document_id, df, features)
+    elif visualization_type == 'histogram':
+        return create_histogram(document_id, df, features)
     elif visualization_type == 'bar-plot':
         return create_bar_plot(document_id, df, features)
 
