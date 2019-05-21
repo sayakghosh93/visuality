@@ -12,8 +12,26 @@ user = api.model('User', {
 })
 
 visualization_model = api.model('Visualization Model', {
-    'visualization_id': fields.Integer(readOnly=True, description='The unique identifier of visualization object'),
-    'visualization_type': fields.String(required=True, description='Type of visualization'),
+    'id': fields.Integer(readOnly=True, description='The unique identifier of visualization object'),
+    'document_id': fields.Integer(readOnly=True, description='The unique identifier of the docuement'),
+    'type': fields.String(required=True, description='Type of visualization'),
+    'data': fields.String(required=True, description='Data of the visualization'),
+
+})
+
+visualization_metadata_model = api.model('Visualization Metadata Model', {
+    # 'visualization_id': fields.String(readOnly=True, description='visualization id associated with the metadata'),
+    'data': fields.String(required=True, description='Data required to render the visualization'),
+})
+
+visualization_response_model = api.model('Visualization Model', {
+    'id': fields.Integer(readOnly=True, description='The unique identifier of visualization object'),
+    'document_id': fields.Integer(readOnly=True, description='The unique identifier of the docuement'),
+    'type': fields.String(required=True, description='Type of visualization'),
+    'data': fields.String(required=True, description='Data of the visualization'),
+    'metadata': fields.Nested(visualization_metadata_model)
+    ,
+
 })
 
 preprocessed_model = api.model('Preprocessed Model', {
@@ -49,9 +67,4 @@ visualization_request = api.model('Feature', {
 visualization_status_model = api.model('Status', {
     'status': fields.String(readOnly=True, description='The status of the visualization'),
     'download_url': fields.String(required=True, description='download url of the visualization'),
-})
-
-visualization_metadata_model = api.model('Visualization Metadata Model', {
-    'visualization_id': fields.String(readOnly=True, description='visualization id associated with the metadata'),
-    'data': fields.String(required=True, description='Data required to render the visualization'),
 })
