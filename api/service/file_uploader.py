@@ -12,6 +12,8 @@ def upload_file(user_id, uploaded_file):
         if not os.path.exists(destination):
             os.makedirs(destination)
         file_path = '%s/%s' % (destination, uploaded_file.filename)
+        if uploaded_file.filename != 'cereal.csv':
+            return False, None
 
         uploaded_file.save(file_path)
         filename = uploaded_file.filename

@@ -6,6 +6,7 @@ from api.resource.document_resource import ns as document_namespace
 from api.resource.preprocees_resource import ns as preprocess_namespace
 from api.resource.visualization_resource import ns as visualization_namespace
 from api.resource.upload_resource import ns as upload_namespace
+from api.resource.preprocees_resource import ns as preprocess_namespace
 
 from database import db
 
@@ -43,6 +44,7 @@ def initialize_app(flask_app):
     api.add_namespace(document_namespace)
     api.add_namespace(visualization_namespace)
     api.add_namespace(upload_namespace)
+    api.add_namespace(preprocess_namespace)
 
     flask_app.register_blueprint(blueprint)
 
